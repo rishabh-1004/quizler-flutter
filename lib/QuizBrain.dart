@@ -1,7 +1,7 @@
 import 'Questions.dart';
 
 class QuizBrain {
-  List<Question> questionStack = [
+  List<Question> _questionStack = [
     Question('Some cats are actually allergic to humans', 'true'),
     Question('You can lead a cow down stairs but not up stairs.', 'false'),
     Question(
@@ -29,4 +29,12 @@ class QuizBrain {
         'In West Virginia, USA, if you accidentally hit an animal with your car, you are free to take it home to eat.',
         'true'),
   ];
+
+  String getQuestion(int questionNumber) {
+    return _questionStack[questionNumber].questionText;
+  }
+
+  String getAnswer(int questionNumber) {
+    return _questionStack[questionNumber].answer;
+  }
 }

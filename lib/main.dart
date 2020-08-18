@@ -30,7 +30,7 @@ class _QuizPageState extends State<QuizPage> {
   int questionnumber = 0;
   QuizBrain quizBrain = QuizBrain();
   resultChecker({String valueSelected}) {
-    if (valueSelected == quizBrain.questionStack[questionnumber].answer) {
+    if (valueSelected == quizBrain.getAnswer(questionnumber)) {
       scoreChecker.add(
         Icon(
           Icons.check,
@@ -59,7 +59,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                quizBrain.questionStack[questionnumber].questionText,
+                quizBrain.getQuestion(questionnumber),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
