@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'QuizBrain.dart';
 
 void main() => runApp(Quizzler());
@@ -27,10 +28,10 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreChecker = [];
-  int questionnumber = 0;
   QuizBrain quizBrain = QuizBrain();
+
   resultChecker({String valueSelected}) {
-    if (valueSelected == quizBrain.getAnswer(questionnumber)) {
+    if (valueSelected == quizBrain.getAnswer()) {
       scoreChecker.add(
         Icon(
           Icons.check,
@@ -47,6 +48,37 @@ class _QuizPageState extends State<QuizPage> {
     }
   }
 
+  void resetApp() {
+    setState(() {
+      scoreChecker = [];
+    });
+    quizBrain.resetQuestionNumber();
+    Navigator.pop(context);
+  }
+
+  void nextQuestion() {
+    if (quizBrain.checkQuestionrange()) {
+      Alert(
+        context: context,
+        type: AlertType.info,
+        title: "Quizzler",
+        desc: "Thanks for playing. Click to play again ",
+        buttons: [
+          DialogButton(
+            child: Text(
+              "COOL",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => resetApp(),
+            width: 120,
+          )
+        ],
+      ).show();
+    } else {
+      quizBrain.nextQuestion();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -59,7 +91,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                quizBrain.getQuestion(questionnumber),
+                quizBrain.getQuestion(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -83,10 +115,9 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                //The user picked true.
                 setState(() {
                   resultChecker(valueSelected: 'true');
-                  questionnumber++;
+                  nextQuestion();
                 });
               },
             ),
@@ -108,7 +139,7 @@ class _QuizPageState extends State<QuizPage> {
                 //The user picked false.
                 setState(() {
                   resultChecker(valueSelected: 'false');
-                  questionnumber++;
+                  nextQuestion();
                 });
               },
             ),
